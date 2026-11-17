@@ -1,0 +1,15 @@
+
+{% extends 'base.html' %}
+{% load custom_tags %}
+{% block title %}{{ object }}{% endblock %}
+{% block content %}
+<h2>{{ model_verbose }}: {{ object }}</h2>
+<dl class="record-details">
+  {% for f in fields %}
+  <dt class="record-detail-label">{{ f.verbose_name|title }}</dt>
+  <dd class="record-detail-value">{{ object|get_value:f.name }}</dd>
+  {% endfor %}
+</dl>
+<a class="btn btn-warning" href="{% url model_name|add:'_update' object.pk %}" aria-label="Edit {{ object }}" title="Edit"><i class="fas fa-pen" aria-hidden="true"></i><span class="visually-hidden">Edit</span></a>
+<a class="btn btn-secondary" href="{% url model_name|add:'_list' %}">Back</a>
+{% endblock %}

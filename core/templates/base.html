@@ -1,0 +1,107 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}Attendance Management{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'core/dashboard/bootstrap.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'core/dashboard/fonts.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'core/dashboard/plugins.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'core/dashboard/kaiadmin.min.css' %}" />
+  </head>
+  <body>
+    <div class="wrapper">
+      {% if request.user.is_authenticated %}
+      <aside class="sidebar" data-background-color="dark">
+        <div class="sidebar-logo">
+          <div class="logo-header" data-background-color="dark">
+            <a class="logo text-white fw-bold" href="{% url 'home' %}">Attendance</a>
+            <div class="nav-toggle">
+              <button class="btn btn-toggle toggle-sidebar" type="button" aria-label="Toggle sidebar">
+                <i class="fas fa-bars" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="sidebar-wrapper scrollbar scrollbar-inner">
+          <div class="sidebar-content">
+            <ul class="nav nav-secondary">
+              <li class="nav-item{% if request.resolver_match.url_name == 'home' %} active{% endif %}">
+                <a href="{% url 'home' %}"><i class="fas fa-home" aria-hidden="true"></i><p>Dashboard</p></a>
+              </li>
+              <li class="nav-section">
+                <span class="sidebar-mini-icon"><i class="fa fa-ellipsis-h"></i></span>
+                <h4 class="text-section">Manage records</h4>
+              </li>
+              <li class="nav-item{% if 'course_' in request.resolver_match.url_name %} active{% endif %}">
+                <a href="{% url 'course_list' %}"><i class="fas fa-book"></i><p>Courses</p></a>
+              </li>
+              <li class="nav-item{% if 'courseunit' in request.resolver_match.url_name %} active{% endif %}">
+                <a href="{% url 'courseunit_list' %}"><i class="fas fa-book-open"></i><p>Course units</p></a>
+              </li>
+              <li class="nav-item{% if 'student_' in request.resolver_match.url_name %} active{% endif %}">
+                <a href="{% url 'student_list' %}"><i class="fas fa-user-graduate"></i><p>Students</p></a>
+              </li>
+              <li class="nav-item{% if 'lecturer_' in request.resolver_match.url_name %} active{% endif %}">
+                <a href="{% url 'lecturer_list' %}"><i class="fas fa-chalkboard-teacher"></i><p>Lecturers</p></a>
+              </li>
+              <li class="nav-item{% if 'room' in request.resolver_match.url_name %} active{% endif %}">
+                <a href="{% url 'room_list' %}"><i class="fas fa-door-open"></i><p>Rooms</p></a>
+              </li>
+              <li class="nav-item{% if 'timetable' in request.resolver_match.url_name %} active{% endif %}">
+                <a href="{% url 'timetable_list' %}"><i class="fas fa-calendar-alt"></i><p>Timetable</p></a>
+              </li>
+              <li class="nav-item{% if 'attendance' in request.resolver_match.url_name %} active{% endif %}">
+                <a data-bs-toggle="collapse" href="#attendance-menu" aria-expanded="{% if 'attendance' in request.resolver_match.url_name %}true{% else %}false{% endif %}">
+                  <i class="fas fa-clipboard-check"></i><p>Attendance</p><span class="caret"></span>
+                </a>
+                <div class="collapse{% if 'attendance' in request.resolver_match.url_name %} show{% endif %}" id="attendance-menu">
+                  <ul class="nav nav-collapse">
+                    <li><a href="{% url 'studentattendance_list' %}"><span class="sub-item">Students</span></a></li>
+                    <li><a href="{% url 'lecturerattendance_list' %}"><span class="sub-item">Lecturers</span></a></li>
+                  </ul>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </aside>
+      {% endif %}
+
+      <main class="main-panel">
+        <header class="main-header">
+          <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
+            <div class="container-fluid">
+              <span class="navbar-brand mb-0 h1 d-lg-none">Attendance</span>
+              {% if request.user.is_authenticated %}
+              <div class="ms-auto d-flex align-items-center gap-3">
+                <span class="text-muted">Signed in as <strong>{{ request.user.get_username }}</strong></span>
+                <form method="post" action="{% url 'logout' %}" class="m-0">
+                  {% csrf_token %}
+                  <button class="btn btn-outline-secondary btn-sm" type="submit">Log out</button>
+                </form>
+              </div>
+              {% endif %}
+            </div>
+          </nav>
+        </header>
+        <div class="container">
+          <div class="page-inner">
+            {% if messages %}
+              {% for message in messages %}
+              <div class="alert alert-{{ message.tags|default:'info' }}" role="alert">{{ message }}</div>
+              {% endfor %}
+            {% endif %}
+            {% block content %}{% endblock %}
+          </div>
+        </div>
+      </main>
+    </div>
+    <script src="{% static 'core/dashboard/jquery.min.js' %}"></script>
+    <script src="{% static 'core/dashboard/popper.min.js' %}"></script>
+    <script src="{% static 'core/dashboard/bootstrap.min.js' %}"></script>
+    <script src="{% static 'core/dashboard/jquery.scrollbar.min.js' %}"></script>
+    <script src="{% static 'core/dashboard/kaiadmin.min.js' %}"></script>
+  </body>
+</html>

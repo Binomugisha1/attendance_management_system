@@ -1,0 +1,20 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Django: Run in External Browser",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}\\manage.py",
+            "args": [
+                "runserver",
+                "127.0.0.1:8000"
+            ],
+            "django": true,
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "Starting development server at (https?://\\S+)"
+            }
+        }
+    ]
+}

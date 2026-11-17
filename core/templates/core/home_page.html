@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block title %}Attendance Dashboard{% endblock %}
+{% block content %}
+<div class="d-flex align-items-center justify-content-between flex-wrap pt-2 pb-4">
+  <div>
+    <h3 class="fw-bold mb-2">Attendance Dashboard</h3>
+    <p class="text-muted mb-0">Manage academic records and monitor attendance.</p>
+    <small class="text-muted">{{ total_records }} records across {{ dashboard_cards|length }} sections</small>
+  </div>
+  <div class="ms-md-auto py-2 py-md-0">
+    <a href="{% url 'studentattendance_list' %}" class="btn btn-label-info btn-round me-2">Student attendance</a>
+    <a href="{% url 'student_create' %}" class="btn btn-primary btn-round">Add student</a>
+  </div>
+</div>
+
+<div class="row">
+  {% for card in summary_cards %}
+  <div class="col-sm-6 col-md-3">
+    <div class="card card-stats card-round">
+      <div class="card-body">
+        <div class="row align-items-center">
+          <div class="col-icon">
+            <div class="icon-big text-center icon-{{ card.color }} bubble-shadow-small">
+              <i class="{{ card.icon }}" aria-hidden="true"></i>
+            </div>
+          </div>
+          <div class="col col-stats ms-3 ms-sm-0">
+            <div class="numbers">
+              <p class="card-category">{{ card.label }}</p>
+              <h4 class="card-title">{{ card.count }}</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <div class="card card-round">
+      <div class="card-header">
+        <div class="card-head-row">
+          <h4 class="card-title">Manage records  in each section</h4>
+          <span class="text-muted"></span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          {% for card in dashboard_cards %}
+          <div class="col-sm-6 col-lg-3">
+            <div class="card card-round h-100 shadow-sm border-top border-4 border-{{ card.color }}">
+              <div class="card-body d-flex flex-column">
+                <div class="d-flex align-items-center mb-3">
+                  <div class="icon-big text-center icon-{{ card.color }} bubble-shadow-small me-3">
+                    <i class="{{ card.icon }}" aria-hidden="true"></i>
+                  </div>
+                  <div>
+                    <h5 class="card-title mb-1">{{ card.label }}</h5>
+                    <h4 class="card-title mb-0">{{ card.count }}</h4>
+                  </div>
+                </div>
+                <div class="mt-auto d-flex flex-wrap gap-2">
+                  <a href="{% url card.list_url %}" class="btn btn-primary btn-sm">Manage</a>
+                  <a href="{% url card.create_url %}" class="btn btn-label-info btn-sm">Add new</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

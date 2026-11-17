@@ -1,0 +1,14 @@
+
+{% extends 'base.html' %}
+{% block title %}Login{% endblock %}
+{% block content %}
+<div class="login-layout"><div class="login-card">
+  <h2>Login</h2>
+  {% if form.errors %}<div class="alert alert-danger">Invalid credentials.</div>{% endif %}
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn btn-primary login-submit-button" type="submit">Login</button>
+  </form>
+</div></div>
+{% endblock %}

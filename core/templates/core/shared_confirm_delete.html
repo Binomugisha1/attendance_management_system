@@ -1,0 +1,12 @@
+
+{% extends 'base.html' %}
+{% block title %}Delete {{ object }}{% endblock %}
+{% block content %}
+<h2>Delete {{ model_verbose }}</h2>
+<p>Are you sure you want to delete <strong>{{ object }}</strong>?</p>
+<form method="post">
+  {% csrf_token %}
+  <button class="btn btn-danger" type="submit">Yes, delete</button>
+  <a class="btn btn-secondary" href="{% url model_name|add:'_list' %}">Cancel</a>
+</form>
+{% endblock %}
